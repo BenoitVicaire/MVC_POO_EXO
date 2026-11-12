@@ -20,38 +20,9 @@ if(isset($_POST['submit'])){
 
                 //6. Vérifier si l'email est disponible
                 try{
-                    //Créer l'objet de connexion PDO
-                    //Le mode d'erreur par Exception est le comportement par défaut, on n'est plus obligé de le mettre lors de la création de l'objet
-                    $pdo = new PDO("mysql:host=localhost;dbname=agent_manager","root","root",[
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                    ]);
-
-                    //A. Préparer la requête de lecture des données lié à l'email
-                    $request = $pdo->prepare('SELECT u.email FROM users u WHERE u.email = ?');
-
-                    //B. Relier le ? à mon email
-                    $request->bindParam(1,$email,PDO::PARAM_STR);
-
-                    //C. Exécuter la requête
-                    $request->execute();
-
-                    //D. Récupérer les données
-                    $data = $request->fetch(PDO::FETCH_ASSOC);
-
-                    //E. Vérifier si $data est vide. S'il est vide, l'emai lest disponible
-                    if(empty($data)){
-                        //7. Enregistrer le manager
-                        //A. Préparer la requête de lecture des données lié à l'email
-                        $request = $pdo->prepare('INSERT INTO users (firstname, lastname, email, `password`, Id_Role) VALUES(?,?,?,?,2)');
-
-                        //B. Relier les ? à mes données
-                        $request->bindParam(1,$firstname,PDO::PARAM_STR);
-                        $request->bindParam(2,$lastname,PDO::PARAM_STR);
-                        $request->bindParam(3,$email,PDO::PARAM_STR);
-                        $request->bindParam(4,$password,PDO::PARAM_STR);
-
-                        //C. Exécuter la requête
-                        $request->execute();
+                    
+                    if(!User::emailExists($email)){
+                       User::create($firstname, $lastname, $email, $password);
 
                         //D. Affichage en nettoyant le code
                         $message = htmlspecialchars($firstname)." ".htmlspecialchars($lastname)." est correctement enregistré.";
