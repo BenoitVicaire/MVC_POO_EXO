@@ -6,26 +6,26 @@
 	?>
 	<section>
 		<h2>Inscription</h2>
-		<form action="" method="post">
+		<form action="index.php?page=register" method="post">
 			<label for="firstname">Prenom :<input id="firstname" type="text" name="firstname"></label>
 			<label for="lastname">Nom :<input id="lastname" type="text" name="lastname"></label>
 			<label for="email">Email :<input id="email" type="text" name="email"></label>
-			<label for="password">Motde Passe :<input id="password" type="text" name="password"></label>
+			<label for="password">Motde Passe :<input id="password" type="password" name="password"></label>
 			<input type="submit" name="submit">
 		</form>
-		<p><?php echo $message ?></p>
+		<p><?php echo htmlspecialchars($message) ?></p>
 	</section>
 	<section>
 		<h2>Connexion</h2>
-		<form action="" method="post">
+		<form action="index.php?page=login" method="post">
 			<label for="emailConnection">Email :<input id="emailConnection" type="text" name="emailConnection"></label>
-			<label for="passwordConnection">Motde Passe :<input id="passwordConnection" type="text" name="passwordConnection"></label>
+			<label for="passwordConnection">Motde Passe :<input id="passwordConnection" type="password" name="passwordConnection"></label>
 			<input type="submit" name="submitConnection">
 		</form>
-		<p><?php echo $messageConnection ?></p>
+		<p><?php echo htmlspecialchars($messageConnection) ?></p>
 	</section>
 	<?php
-		};
+		}
 		
 		//Vérifier si un manager est connecté
 		if(isset($_SESSION["id"])){

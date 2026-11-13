@@ -1,9 +1,11 @@
-<?php 
-class database{
+<?php
+class Database
+{
 	private static ?PDO $pdo = null;
 
-	public static function getConnection() : PDO{
-		if (self::$pdo === null){
+	public static function getConnection(): PDO
+	{
+		if (self::$pdo === null) {
 			self::$pdo = new PDO(
 				"mysql:host=localhost;dbname=agent_manager",
 				"root",
@@ -11,6 +13,6 @@ class database{
 				[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 			);
 		}
-		return self::$pdo;    
+		return self::$pdo;
 	}
 }

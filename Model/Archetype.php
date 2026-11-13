@@ -14,7 +14,7 @@ class Archetype
 	{
 		$pdo = Database::getConnection();
 
-		$request = $pdo->prepare("SELECT a.archetype FROM archetype a WHERE a.Id_archetype = ?");
+		$request = $pdo->prepare("SELECT a.archetype FROM archetypes a WHERE a.Id_archetype = ?");
 		$request->bindParam(1, $id, PDO::PARAM_INT);
 		$request->execute();
 		

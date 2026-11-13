@@ -4,7 +4,7 @@
 		<h2>Enregistrement d'un agent</h2>
 		<form action="" method="post">
 			<label for="name">Nom : <input id="name" type="text" name="name"></label>
-			<label for="dob">Date de naissance : <input id="dob" type="text" name="dob"></label>
+			<label for="dob">Date de naissance : <input id="dob" type="date" name="dob"></label>
 			<label for="tier">Tier : <select name="tier" id="tier">
 				<?php
 					//Affichage des options pour le Tier
@@ -29,7 +29,7 @@
 			</label>
 			<input type="submit" name="submit">
 		</form>
-		<p><?php echo($message) ?></p>
+		<p><?php echo htmlspecialchars($message) ?></p>
 	</section>
 	<section>
 		<h2>Liste des agents</h2>

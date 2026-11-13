@@ -1,31 +1,37 @@
-<?php 
-//Déclaration des variables d'affichage
-$title = "Accueil";
-$message = "";
-$messageConnection = "";
-$listManagers = [];
-//LISTE DES MANAGERS
-//Vérifier si un manager est connecté
-if(isset($_SESSION["id"])){
-    try{
-        //Créer l'objet de connexion PDO
-        $pdo = new PDO("mysql:host=localhost;dbname=agent_manager","root","root",[
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
+<?php
+class HomeController extends Controller
+{
+	public function index(): void
+	{
+		//Variables d'affichage
+		$title = "Accueil";
+		$message = "";
+		$messageConnection = "";
+		$listManagers = [];
 
-        //A.Préparer la requête
-        $request = $pdo->prepare("SELECT u.Id_User, u.firstname, u.lastname, u.email, u.password, u.created_at, r.role FROM users u INNER JOIN roles r ON u.Id_Role = r.Id_Role WHERE r.role = 'Manager'");
+		//MESSAGES FLASH (écrits par AuthController avant la redirection)
+		//On les lit puis on les supprime pour qu'ils ne s'affichent qu'une fois
+		if (isset($_SESSION['flash_register'])) {
+			$message = $_SESSION['flash_register'];
+			unset($_SESSION['flash_register']);
+		}
+		if (isset($_SESSION['flash_login'])) {
+			$messageConnection = $_SESSION['flash_login'];
+			unset($_SESSION['flash_login']);
+		}
 
-        //B.Exécuter la requête
-        $request->execute();
+		//LISTE DES MANAGERS
+		//Vérifier si un manager est connecté
+		if (isset($_SESSION["id"])) {
+			try {
+				$listManagers = User::getManagers();
+			} catch (Exception $error) {
+				//Erreur 500 : Serveur indisponible
+				http_response_code(500);
+				$message = $error->getMessage();
+			}
+		}
 
-        //C.Récupérer les données
-        $listManagers = $request->fetchAll(PDO::FETCH_ASSOC);
-                        
-    }catch(Exception $error){
-        http_response_code(500);
-        $message = $error->getMessage();
-
-        //Erreur 500 : Serveur indisponible
-    }
+		$this->render('home', compact('title', 'message', 'messageConnection', 'listManagers'));
+	}
 }
